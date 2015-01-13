@@ -9,15 +9,18 @@ describe "Fizz Buzz" do
   end
 
   it "returns fizz-buzz if number is divisible by 3 and 5" do
-    expect(fb.fizz_buzz_check(15)).to eq ["fizz-buzz"]
+    expect(fb.fizz_buzz_evaluator[:condition].call(15)).to eq true
+    expect(fb.fizz_buzz_evaluator[:return_message]).to eq "fizz-buzz"
   end
 
   it "returns fizz if number is divisible by 3 and not 5" do
-    expect(fb.fizz_check(3)).to eq ["fizz"]
+    expect(fb.fizz_evaluator[:condition].call(3)).to eq true
+    expect(fb.fizz_evaluator[:return_message]).to eq "fizz"
   end
 
   it "returns buzz if number is divisible by 5 and not 3" do
-    expect(fb.buzz_check(5)).to eq ["buzz"]
+    expect(fb.buzz_evaluator[:condition].call(5)).to eq true
+    expect(fb.buzz_evaluator[:return_message]).to eq "buzz"
   end
 end
 

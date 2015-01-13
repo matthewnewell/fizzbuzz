@@ -8,27 +8,41 @@ class FizzBuzz
     @result ||= []
   end
 
-  def fizz_check(num)
-    if num % 3 == 0 && num % 5 != 0
-     result << "fizz"
-    end
-  end
-
-  def buzz_check(num)
-    if num % 5 == 0 && num % 3 != 0
-     result << "buzz"
-    end
-  end
-
-  def fizz_buzz_check(num)
-    if num % 3 == 0 && num % 5 == 0
-      result << "fizz-buzz"
-    end
-  end
-
   def evaluate
     (@num1..@num2).each do |i|
-      result << i unless fizz_check(i) ||  buzz_check(i) || fizz_buzz_check(i)
+
+      result << fizz_evaluator[:return_message] if fizz_evaluator[:condition].call(i)
+      result << buzz_evaluator[:return_message] if buzz_evaluator[:condition].call(i)
+      result << fizz_buzz_evaluator[:return_message] if fizz_buzz_evaluator[:condition].call(i)
+      result << i if integer_evaluator[:condition].call(i)
     end
+  end
+
+  def fizz_evaluator
+    {
+      condition: ->(i){ i % 3 == 0 && i % 5 != 0 },
+      return_message: "fizz"
+    }
+  end
+
+  def buzz_evaluator
+    {
+      condition: ->(i){ i % 5 == 0 && i % 3 != 0 },
+      return_message: "buzz"
+    }
+  end
+
+  def fizz_buzz_evaluator
+    {
+      condition: ->(i){ i % 3 == 0 && i % 5 == 0 },
+      return_message: "fizz-buzz"
+    }
+  end
+
+  def integer_evaluator
+    {
+      condition: ->(i){ i % 3 != 0 && i % 5 != 0},
+      return_message: nil
+    }
   end
 end
