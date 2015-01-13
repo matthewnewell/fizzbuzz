@@ -8,13 +8,11 @@ class FizzBuzz
     @result ||= []
   end
 
-  def evaluate
-    (@num1..@num2).each do |i|
+  def evaluator(evaluator_name, i)
+    evaluator = send("#{evaluator_name}_evaluator")
 
-      result << fizz_evaluator[:return_message] if fizz_evaluator[:condition].call(i)
-      result << buzz_evaluator[:return_message] if buzz_evaluator[:condition].call(i)
-      result << fizz_buzz_evaluator[:return_message] if fizz_buzz_evaluator[:condition].call(i)
-      result << i if integer_evaluator[:condition].call(i)
+    if evaluator[:condition].call(i)
+      result << evaluator[:return_message] ||= i
     end
   end
 
@@ -41,8 +39,17 @@ class FizzBuzz
 
   def integer_evaluator
     {
-      condition: ->(i){ i % 3 != 0 && i % 5 != 0},
-      return_message: nil
+      condition: ->(i){ i % 3 != 0 && i % 5 != 0}
     }
+  end
+
+  def evaluate
+    evaluators = ["fizz", "buzz", "fizz_buzz", "integer"]
+    
+    (@num1..@num2).each do |i|
+      evaluators.each do |e| 
+        evaluator(e, i)
+      end
+    end 
   end
 end
